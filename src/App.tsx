@@ -5,6 +5,7 @@ import './style.css';
 export const App: FC<{ arr: number[] }> = ({ arr }) => {
   const values = useMemo(() => arr.map((num) => num.toString()), [arr]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [totalSum, setTotalSum] = useState(0);
   const [currentSum, setCurrentSum] = useState(0);
   const [maxSum, setMaxSum] = useState(0);
 
@@ -22,10 +23,14 @@ export const App: FC<{ arr: number[] }> = ({ arr }) => {
       // Reset the widget
       setCurrentSum(Math.max(0, currentValue));
       setMaxSum(Math.max(0, currentValue));
+      setTotalSum(currentValue);
     } else {
       // Actual logic
       setCurrentSum(Math.max(0, currentSum + currentValue));
       setMaxSum(Math.max(maxSum, currentSum + currentValue));
+
+      // Used only for visual puporse
+      setTotalSum(currentSum + currentValue);
     }
   }, [currentIndex]);
 
@@ -43,6 +48,10 @@ export const App: FC<{ arr: number[] }> = ({ arr }) => {
         ))}
       </div>
       <div className="status">
+      <div className="status__item status__item--total">
+          <div className="status__value">{totalSum}</div>
+          <div className="status__label">Total sum</div>
+        </div>
         <div className="status__item status__item--current">
           <div className="status__value">{currentSum}</div>
           <div className="status__label">Current sum</div>
